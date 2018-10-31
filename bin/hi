@@ -1,0 +1,11 @@
+if [ -z "$1" ]; then
+  echo "please provide a project"
+else
+  cd ~/projects/$1
+
+  # activate environment file, if exists
+  if [ -d ~/.venv/$1 ]; then
+    . ~/.venv/$1/bin/activate # python virtualenv
+  fi
+fi
+
