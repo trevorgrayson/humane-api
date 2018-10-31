@@ -1,0 +1,31 @@
+source ~/.hapi.settings
+
+complete -F _jira_tickets tkts
+
+alias hi='. hi'
+
+# github
+alias pull='git pull --rebase'
+alias fetch='git fetch'
+alias status='git status'
+alias co='git checkout'
+alias push='git push origin $(parse_git_branch)'
+
+_jira_tickets()
+{
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts=`cat ~/.jira_tickets | tr '\n' ' '`
+
+  if [[ ${cur} == * ]] ; then
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    return 0
+  fi
+}
+
+parse_git_branch() {
+ git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
