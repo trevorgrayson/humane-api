@@ -1,0 +1,44 @@
+#!/usr/bin/python
+ 
+import sys, os
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(dir_path, '..'))
+
+import tkts
+
+
+def zakerize():
+    summary = raw_input("summary:")
+    as_a = raw_input("As a ")
+    would_like = raw_input("I would like to ")
+    ensure = raw_input("and ensure it ")
+    # issue_type = raw_input("issue type:")
+
+    acceptances = []
+
+    acceptance = raw_input("acceptance criteria:\n* ")
+
+    while acceptance:
+        acceptances.append(acceptance)
+        acceptance = raw_input("* ")
+
+    if not as_a:
+        as_a = "developer"
+
+    tkts.create_issue(summary, as_a, would_like, ensure, acceptances)
+
+
+def is_create():
+  return (sys.argv[1] == 'create' or sys.argv[1] == 'c')
+
+
+if __name__ == '__main__':
+    if len(sys.argv) == 2 and is_create(): zakerize()
+    elif len(sys.argv) == 3: tkts.comment(sys.argv[1], sys.argv[2])
+    elif len(sys.argv) == 2: tkts.get_issue(sys.argv[1])
+    else: 
+        tkts.get_list()
+        print '===='
+        tkts.reported()
+
