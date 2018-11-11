@@ -33,6 +33,7 @@ An environment environment variable pointing to your jira server.  Consider addi
 
 ```
     export HAPI_TKTS="jira.your-company.com:443"
+    export HAPI_REPO="git@github.com:YourName"
 ```
 
 While you're in your `~/.bash_profile` you can add tab completion with the following:
@@ -52,7 +53,6 @@ Finally, add a password file.
 - ticketing: jira, trello, bugzilla, flat file
   - state changing -> code review
   - project tkts
-  - tickets created
 - software lifecycle
 - version control
   - RSS: peer submissions
