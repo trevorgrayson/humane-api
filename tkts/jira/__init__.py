@@ -4,20 +4,40 @@ import sys
 import os
 from base64 import b64encode
 
-conn = httplib.HTTPSConnection(os.environ['HAPI_TKTS'])
-b64 = b64encode( open(os.environ['HOME'] + '/.jira_pass').read()[:-1])
 
-headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization': 'Basic %s' % b64
-}
+class Client(object):
+
+    def __init__(self):
+        host = os.environ.get('HAPI_TKTS')
+
+        if not host:
+            print "Set the HAPI_TKTS env variable to jira's host if you would like to connect to jira"
+        else:
+
+            self.conn = httplib.HTTPSConnection(host)
+            b64 = b64encode( open(os.environ['HOME'] + '/.jira_pass').read()[:-1])
+
+            self.headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic %s' % b64
+            }
+
+    def request(self, method, url, args):
+        return self.conn.request(method, url, args, self.headers)
+
+    def getresponse(self):
+        return self.conn.getresponse()
+        
+
+CLIENT = Client()
 
 
 def get_list():
-    conn.request('GET', 
-      '/rest/api/2/search?jql=assignee=trevor.grayson%20and%20resolution=Unresolved', {}, headers)
-    resp = conn.getresponse()
+    args = 'assignee=trevor.grayson%20and%20resolution=Unresolved'
+    CLIENT.request('GET', 
+      '/rest/api/2/search?jql={}'.format(args), {})
+    resp = CLIENT.getresponse()
 
     if resp.status != 200:
         print 'ERROR: %s' % resp.reason
@@ -27,6 +47,7 @@ def get_list():
 
     resp = json.loads(body)
 
+    # store ticket ids for tab-completion
     fp = open(os.environ['HOME'] +'/.jira_tickets', 'w')
     for issue in resp['issues']:
         fp.write(issue['key'] + '\n')
@@ -37,9 +58,9 @@ def get_list():
 
 
 def get_issue(key):
-    conn.request('GET', 
-      '/rest/api/2/issue/%s' % key, {}, headers)
-    resp = conn.getresponse()
+    CLIENT.request('GET', 
+      '/rest/api/2/issue/%s' % key, {})
+    resp = CLIENT.getresponse()
 
     if resp.status != 200:
         print 'ERROR: %s' % resp.reason
@@ -78,23 +99,21 @@ h1. Acceptance Critera
     if parent is not None:
         create['fields']['parent'] = { 'key': parent }
 
-    conn.request('POST', 
+    CLIENT.request('POST', 
         '/rest/api/2/issue/',
-        json.dumps(create), 
-        headers)
+        json.dumps(create))
 
-    resp = conn.getresponse()
+    resp = CLIENT.getresponse()
     print resp.status
     print resp.read()
 
 def comment(issue_id, body):
    
-   conn.request('POST', 
+   CLIENT.request('POST', 
      '/rest/api/2/issue/{}/comment'.format(issue_id), 
-     json.dumps({'body': body}), 
-     headers)
+     json.dumps({'body': body}))
 
-   resp = conn.getresponse()
+   resp = CLIENT.getresponse()
 
    if resp.status in ['201']:
        print 'ERROR: %s' % resp.reason
