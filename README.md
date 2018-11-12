@@ -2,6 +2,21 @@
 
 The Human API. A toolkit of bash shortcuts for developers.
 
+## runme
+
+`runme` is a README.md file executor. `runme` will run through your readme file looking for
+headers ("##") and map the code ( ``` delimited ) lines to their headings.
+
+All commands will be prompted before execution. Simply hitting enter will run the command.
+
+```
+  # list sections
+  runme
+
+  # execute section
+  runme section
+```
+
 ## prj
 
 `prj` is how you start working on a *project*.
@@ -48,24 +63,30 @@ Presently JIRA is the only implementation.
   # create tkts
   tkts c[reate]
 
-# comment
 ```
 
-### `tkts` Installation
+### Installation
 
 `tkts` has a few requirements.
 
 The `bin` folder in this project needs to be in your `$PATH`.
 
 ```
-	echo "export PATH=$PWD/bin/:$PATH" ~/.bash_profile
+	echo "export PATH=$PWD/bin/:$PATH" >> ~/.bash_profile
 ```
 
 An environment environment variable pointing to your jira server.  Consider adding this to your `~/.bash_profile`.
 
 ```
-    export HAPI_TKTS="jira.your-company.com:443"
-    export HAPI_REPO="git@github.com:YourName"
+    # runme
+    echo 'complete -W "`runme | paste -sd " " -`" runme' >> ~/.bash_profile
+
+    # prj
+    export HAPI_REPO="git@github.com:$YourName"
+
+	  # tkts
+    export HAPI_TKTS="jira.$YourCompany.com:443"
+
 ```
 
 While you're in your `~/.bash_profile` you can add tab completion with the following:
@@ -77,21 +98,18 @@ While you're in your `~/.bash_profile` you can add tab completion with the follo
 Finally, add a password file.
 
 ```
-  echo "$user-name:$password" > ~/.jira_pass
+  echo "$username:$password" > ~/.jira_pass
   chmod 0600 ~/.jira_pass
 ```
 
-
+## Blue Sky
 - ticketing: jira, trello, bugzilla, flat file
   - state changing -> code review
-  - project tkts
 - software lifecycle
 - version control
   - RSS: peer submissions
   - review
 - news
-- project contexts
-  - hi
 - project planning
   - graphs
   - wiki pages
