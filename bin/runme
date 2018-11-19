@@ -14,15 +14,25 @@ if __name__ == '__main__':
         if len(sys.argv) > 1:
             command = sys.argv[1]
 
+            if command not in runme.commands:
+                print "runme: command '{}' not found".format(command)
+                exit(1)
+
             for line in runme.commands[command]:
                 should_exec = raw_input(line + ' [Yn]')
 
                 if should_exec in [None, 'y', 'Y', 'yes', '']:
                     os.system(line)
+
+                    if line[:3] == "cd ":
+                      os.chdir(line[3:])
                 else:
                     print "skipping."
 
         else:
+            # if runme.title:
+            #     print runme.title
+
             print "choose one..."
 
             for cmd in runme.commands:
