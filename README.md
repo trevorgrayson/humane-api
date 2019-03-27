@@ -65,6 +65,30 @@ Presently JIRA is the only implementation.
 
 ```
 
+## terminalize
+
+Many commands come with a suite of methods which you may use consequtively, and may benefit from having a terminal 
+experience.  Examples of this include `git`, `docker`, and several frameworks including `django`.
+
+By running `terminalize` with the binary command as an argument, you can implement this.
+
+```
+  terminalize git
+  git> fetch # runs `git fetch`
+  git> diff # runs `git diff`
+
+``` 
+
+Some executables are looking for piped input. They can be implemented using `terminalize-pipe`
+
+```
+  terminalize-pipe "psql -h localhost"
+  psql> select * from your_table;
+
+```
+
+This will be updated with useful features including command history and tab completion.
+
 ### Installation
 
 `tkts` has a few requirements.
