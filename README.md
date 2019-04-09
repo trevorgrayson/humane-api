@@ -46,24 +46,8 @@ All commands will be prompted before execution. Hitting enter will run the comma
 ## tkts
 
 The intent of this is to give one set of commands that connect to any ticketing system.  
-Presently the implementations are JIRA, or using the local file system.
+Presently the implementations are JIRA, or using the local file system. [More](./tkts/README.md)
 
-### Commands
-
-```
-  # list tkts assigned to you
-  tkts 
-
-  # detail view
-  tkts ID-<tab-complete><enter>
-
-  # comment
-  tkts ID-123 "I am the very comment of a modern major general."
-
-  # create tkts
-  tkts c[reate]
-
-```
 
 ## terminalize
 
@@ -91,15 +75,11 @@ This will be updated with useful features including command history and tab comp
 
 ### Installation
 
-`tkts` has a few requirements.
-
 The `bin` folder in this project needs to be in your `$PATH`.
 
 ```
 	echo "export PATH=$PWD/bin/:$PATH" >> ~/.bash_profile
 ```
-
-An environment environment variable pointing to your jira server.  Consider adding this to your `~/.bash_profile`.
 
 ```
     # runme
@@ -109,22 +89,7 @@ An environment environment variable pointing to your jira server.  Consider addi
     export HAPI_REPO="git@github.com:$YourName"
     echo 'alias prj=". prj"' >> ~/.bash_profile
 
-	  # tkts
-    export HAPI_TKTS="jira.$YourCompany.com:443"
 
-```
-
-While you're in your `~/.bash_profile` you can add tab completion with the following:
-
-```
-  echo "source $PWD/bash/bash_profile" >> ~/.bash_profile
-```
-
-Finally, add a password file.
-
-```
-  echo "$username:$password" > ~/.jira_pass
-  chmod 0600 ~/.jira_pass
 ```
 
 ## Blue Sky
