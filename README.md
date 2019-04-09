@@ -1,21 +1,6 @@
-# hapi
+# The Humane Developer API
 
-The Human API. A toolkit of bash shortcuts for developers.
-
-## runme
-
-`runme` is a README.md file executor. `runme` will run through your readme file looking for
-headers ("##") and map the code ( ``` delimited ) lines to their headings.
-
-All commands will be prompted before execution. Simply hitting enter will run the command.
-
-```
-  # list sections
-  runme
-
-  # execute section
-  runme section
-```
+A toolkit of shortcuts and integration points for developers.
 
 ## prj
 
@@ -42,11 +27,26 @@ This will
 * if it found the folder, it will attempt to `git fetch` to notify you of other developer's updates to the codebase.
 * if it finds a folder named `~/.venv/project_name`, it will attempt to start a python `virtualenv` with it.
 
+## runme
+
+`runme` is a README.md file executor. `runme` will run through your readme file looking for
+headers ("##") and map the code ( ``` delimited ) lines to their headings.
+
+All commands will be prompted before execution. Hitting enter will run the command.
+
+```
+  # list sections
+  runme
+
+  # execute section
+  runme section
+```
+
 
 ## tkts
 
 The intent of this is to give one set of commands that connect to any ticketing system.  
-Presently JIRA is the only implementation.
+Presently the implementations are JIRA, or using the local file system.
 
 ### Commands
 
@@ -107,6 +107,7 @@ An environment environment variable pointing to your jira server.  Consider addi
 
     # prj
     export HAPI_REPO="git@github.com:$YourName"
+    echo 'alias prj=". prj"' >> ~/.bash_profile
 
 	  # tkts
     export HAPI_TKTS="jira.$YourCompany.com:443"
