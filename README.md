@@ -88,6 +88,7 @@ The `bin` folder in this project needs to be in your `$PATH`.
     # prj
     export HAPI_REPO="git@github.com:$YourName"
     echo 'alias prj=". prj"' >> ~/.bash_profile
+    complete -W "`ls $PROJECTS`" hi
 
 
 ```

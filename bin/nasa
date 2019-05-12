@@ -1,0 +1,21 @@
+import requests
+import json
+
+import subprocess
+
+
+API_KEY = "RoCpKjypWNtblVMpgeeMmB4s1gGbQzZ5ZRdSomc1"
+NASA_URL = "https://api.nasa.gov/planetary/apod?api_key=%s" % API_KEY
+
+response = requests.get(NASA_URL)
+
+if response.status_code == 200:
+    data = json.loads(response.text)
+
+    image = data['hdurl']
+
+    print("Updating image to %s" % image)
+    # ubuntu
+    subprocess.call(["gsettings", "set",  "org.gnome.desktop.background", "picture-uri", image])
+
+
