@@ -2,6 +2,7 @@ PROJECTS=~/projects
 
 if [ -z "$1" ]; then
   echo "please provide a project"
+  cd $PROJECTS
 else
   if [ -d $PROJECTS/$1 ]; then
     cd $PROJECTS/$1
