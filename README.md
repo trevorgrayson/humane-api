@@ -86,6 +86,7 @@ This will be updated with useful features including command history and tab comp
 The `bin` folder in this project needs to be in your `$PATH`.
 
 ```
+  # export PROJECTS="~/projects"
 	echo "export PATH=$PWD/bin/:$PATH" >> ~/.bash_profile
 ```
 

@@ -1,4 +1,5 @@
 PROJECTS=~/projects
+PRESENT=${PWD##*/}
 
 if [ -z "$1" ]; then
   echo "please provide a project"
