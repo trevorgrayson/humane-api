@@ -1,0 +1,48 @@
+#!/bin/bash
+
+PROJ_DIR="$PROJECTS/$1"
+
+if [ -d $PROJ_DIR ]; then
+  cd /tmp
+  mkdir -p dsky
+  cd dsky
+
+  if [ -d $1 ]; then
+    echo 'project cached'
+  else 
+    git clone $PROJ_DIR
+  fi
+
+  cd $1
+
+  case "$2" in
+  "vi" )
+      cd $PROJ_DIR
+      vi
+      ;;
+  "commit" )
+      cd $PROJ_DIR
+      git add .
+      git commit
+      ;;
+  "push" )
+      cd $PROJ_DIR
+      git push origin
+      ;;
+  "co" )
+      git checkout $3
+      ;;
+  "branch" )
+      git branch
+      ;;
+  * )
+      cd $PROJ_DIR
+      make $3
+      ;;
+  esac
+
+else 
+  # not a local ~/project 
+  echo "SUBJECT $1 not found."
+fi
+

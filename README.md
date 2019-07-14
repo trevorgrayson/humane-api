@@ -2,6 +2,14 @@
 
 A toolkit of shortcuts and integration points for developers.
 
+## env variables
+
+Here are some good variables to have set for these projects, or in general.
+
+```
+export PROJECTS=$HOME/projects
+```
+
 ## prj
 
 `prj` is how you start working on a *project*.
