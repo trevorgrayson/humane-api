@@ -2,6 +2,10 @@
 
 A toolkit of shortcuts and integration points for developers.
 
+In the pipe:
+
+* [dsky](https://en.wikipedia.org/wiki/Apollo_Guidance_Computer#DSKY_interface)
+
 ## env variables
 
 Here are some good variables to have set for these projects, or in general.
@@ -9,6 +13,7 @@ Here are some good variables to have set for these projects, or in general.
 ```
 export PROJECTS=$HOME/projects
 ```
+
 
 ## prj
 

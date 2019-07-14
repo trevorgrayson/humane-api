@@ -16,6 +16,18 @@ if [ -d $PROJ_DIR ]; then
   cd $1
 
   case "$2" in
+  "github" )
+      cd $PROJ_DIR
+      xdg-open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`"
+      ;;
+  "stat" )
+      cd $PROJ_DIR
+      hub pr list
+      # tc build 
+      # github prs
+      git diff
+      git diff --stat
+      ;;
   "vi" )
       cd $PROJ_DIR
       vi
