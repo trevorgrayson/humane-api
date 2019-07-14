@@ -8,35 +8,38 @@ sys.path.append(os.path.join(dir_path, '..'))
 from runme import RunMe
 
 if __name__ == '__main__':
-    with open('README.md', 'r') as readme:
-        runme = RunMe(readme)
+    try:
+        with open('README.md', 'r') as readme:
+            runme = RunMe(readme)
 
-        if len(sys.argv) > 1:
-            command = sys.argv[1]
+            if len(sys.argv) > 1:
+                command = sys.argv[1]
 
-            if command not in runme.commands:
-                print "runme: command '{}' not found".format(command)
-                exit(1)
+                if command not in runme.commands:
+                    print "runme: command '{}' not found".format(command)
+                    exit(1)
 
-            for line in runme.commands[command]:
-                should_exec = raw_input(line + ' [Yn]')
+                for line in runme.commands[command]:
+                    should_exec = raw_input(line + ' [Yn]')
 
-                if should_exec in [None, 'y', 'Y', 'yes', '']:
-                    os.system(line)
+                    if should_exec in [None, 'y', 'Y', 'yes', '']:
+                        os.system(line)
 
-                    if line[:3] == "cd ":
-                      os.chdir(line[3:])
-                else:
-                    print "skipping."
+                        if line[:3] == "cd ":
+                          os.chdir(line[3:])
+                    else:
+                        print "skipping."
 
-        else:
-            # if runme.title:
-            #     print runme.title
+            else:
+                # if runme.title:
+                #     print runme.title
 
-            print "choose one..."
+                print "choose one..."
 
-            for cmd in runme.commands:
-                print(cmd)
+                for cmd in runme.commands:
+                    print(cmd)
 
-            print
+                print
 
+    except IOError:
+        pass
