@@ -15,7 +15,29 @@ if [ -d $PROJ_DIR ]; then
 
   cd $1
 
+  # TODO need to be able to specify if PROJECT dir, or temp dir
   case "$2" in
+  "github" )
+      cd $PROJ_DIR
+      xdg-open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`"
+      ;;
+  "stat" )
+      cd $PROJ_DIR
+      # tc build 
+      # github prs
+      git diff
+      git diff --stat
+      echo "pull requests"
+      dsky $1 pr
+      ;;
+  "pr" )
+      cd $PROJ_DIR
+      hub pr list -s open -L 10 --format="%i %au: %t %uI%n" # TODO needs formatting
+      ;;
+  "prc" )
+      cd $PROJ_DIR
+      hub pr checkout $3
+      ;;
   "vi" )
       cd $PROJ_DIR
       vi

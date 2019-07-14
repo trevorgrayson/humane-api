@@ -1,7 +1,8 @@
 import feedparser
+import os
 from yaml import load, Loader
 
-FEED_CONFIG = "/Users/tgrayson/.feeds/feeds.yml"
+FEED_CONFIG = "{}/.feeds/feeds.yml".format(os.environ.get("HOME"))
 
 
 def all_feeds():
