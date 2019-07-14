@@ -14,6 +14,29 @@ Here are some good variables to have set for these projects, or in general.
 export PROJECTS=$HOME/projects
 ```
 
+## github
+
+```
+dsky $PROJECT_NAME github
+```
+
+general status of project
+
+```
+dsky $PROJECT_NAME stat
+```
+
+List of open PRs.
+
+```
+dsky $PROJECT_NAME pr
+```
+
+checkout remote branch or tag
+
+```
+dsky $PROJECT_NAME checkout $TAG
+```
 
 ## prj
 
