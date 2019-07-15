@@ -1,61 +1,76 @@
 #!/bin/bash
 
-PROJ_DIR="$PROJECTS/$1"
+if [ $1 == '.' ]; then
+    NOUN=`pwd | rev | cut -d'/' -f1 |rev`
+else
+    NOUN=$1
+fi
+
+PROJ_DIR="$PROJECTS/$NOUN"
 
 if [ -d $PROJ_DIR ]; then
   cd /tmp
   mkdir -p dsky
   cd dsky
 
-  if [ -d $1 ]; then
+  if [ -d $NOUN ]; then
     echo 'project cached'
   else 
     git clone $PROJ_DIR
   fi
 
-  cd $1
+  cd $NOUN
 
   # TODO need to be able to specify if PROJECT dir, or temp dir
   case "$2" in
-  "github" )
+  github )
       cd $PROJ_DIR
-      xdg-open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`"
+      # open or xdg-open
+      open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`"
       ;;
-  "stat" )
+  stat )
       cd $PROJ_DIR
       # tc build 
       # github prs
       git diff
       git diff --stat
       echo "pull requests"
-      dsky $1 pr
+      dsky $NOUN pr
       ;;
-  "pr" )
+  pr )
       cd $PROJ_DIR
       hub pr list -s open -L 10 --format="%i %au: %t %uI%n" # TODO needs formatting
       ;;
-  "prc" )
+  prc )
       cd $PROJ_DIR
       hub pr checkout $3
       ;;
-  "vi" )
+  vi )
       cd $PROJ_DIR
       vi
       ;;
-  "commit" )
+  commit )
       cd $PROJ_DIR
       git add .
       git commit
       ;;
-  "push" )
+  push )
       cd $PROJ_DIR
       git push origin
       ;;
-  "co" )
+  stash )
+      cd $PROJ_DIR
+      git stash
+      ;;
+  rebase )
+      cd $PROJ_DIR
+      git pull --rebase origin master
+      ;;
+  co )
       git checkout $3
       ;;
-  "branch" )
-      git branch
+  branch )
+      git branch -a
       ;;
   * )
       cd $PROJ_DIR
@@ -65,6 +80,6 @@ if [ -d $PROJ_DIR ]; then
 
 else 
   # not a local ~/project 
-  echo "SUBJECT $1 not found."
+  echo "SUBJECT $NOUN not found."
 fi
 
