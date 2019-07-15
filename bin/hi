@@ -1,4 +1,4 @@
-PROJECTS=~/projects
+PROJECTS=${PROJECTS:=$HOME/projects}
 PRESENT=${PWD##*/}
 
 if [ -z "$1" ]; then
@@ -19,8 +19,8 @@ else
   fi
 
   # activate environment file, if exists
-  if [ -d ~/.venv/$1 ]; then
-    . ~/.venv/$1/bin/activate # python virtualenv
-  fi
+  # if [ -d ~/.venv/$1 ]; then
+  #   . ~/.venv/$1/bin/activate # python virtualenv
+  # fi
 fi
 
