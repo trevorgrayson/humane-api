@@ -1,5 +1,6 @@
-export PYTHONPATH=.:venv
+DEPDIR:=venv
 PYTHON:=python3
+export PYTHONPATH=.:$(DEPDIR)
 
 compile: venv
 venv: requirements.txt
@@ -14,5 +15,11 @@ test:
 
 feeds: compile
 	@$(PYTHON) -m feeds
+
+clean: 
+	find . -name *.pyc -delete
+	rm -rf $(DEPDIR)
+gitstatus:
+	$(PYTHON) devboard/git.py
 
 .PHONY: feeds

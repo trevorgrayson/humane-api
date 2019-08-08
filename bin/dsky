@@ -78,6 +78,10 @@ if [ -d $PROJ_DIR ]; then
   branch )
       git branch -a
       ;;
+  idea )
+      cd $PROJ_DIR
+      idea $1
+      ;;
   run )
       docker run -P $1
       ;;
