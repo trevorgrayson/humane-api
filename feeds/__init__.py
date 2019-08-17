@@ -12,7 +12,7 @@ FEED_CONFIG = "/".join((os.environ.get("HOME", '.'), ".feeds/feeds.yml"))
 def all_feeds():
     config = load(open(FEED_CONFIG, 'r').read(), Loader=Loader)
 
-    for key, urls in config['feeds'].iteritems():
+    for key, urls in config['feeds'].items():
         for url in urls:
             yield url
 
@@ -25,6 +25,7 @@ def get_feed():
         returns = {}
 
         for entry in NewsFeed.entries:
+<<<<<<< HEAD
             project, status = entry.title.split('#')
             returns[project] = returns.get(project, [])   
             returns[project].append((entry.published, status, entry.link))
@@ -43,6 +44,11 @@ def get_feed():
 
             if ('success' not in row[1]):
                 output = ('[x]',) + output
+=======
+            print(entry.title) # + " :: " + entry.published)
+            print("\t" + entry.link)
+            # print "\t" + entry.summary
+>>>>>>> moving towards python3
 
                 print(''.join(output))
             
