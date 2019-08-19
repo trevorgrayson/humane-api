@@ -10,8 +10,8 @@ if __name__ == "__main__":
 # you may direct this message's output to the file to get started.
 feeds:
   news:
-    - https://feeds.a.dj.com/rss/RSSWorldNews.xml
-    - https://feeds.a.dj.com/rss/RSSWSJD.xml
-    - https://rss.nytimes.com/services/xml/rss/nyt/World.xml
-    - https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml
+    - url: https://feeds.a.dj.com/rss/RSSWorldNews.xml
+    - url: https://feeds.a.dj.com/rss/RSSWSJD.xml
+    - url: https://rss.nytimes.com/services/xml/rss/nyt/World.xml
+    - url: https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml
 """)

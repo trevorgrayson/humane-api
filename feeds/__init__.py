@@ -1,16 +1,10 @@
 import os
-import feedparser
-import os
 from yaml import load, Loader
-import ssl
-if hasattr(ssl, '_create_unverified_context'):
-    ssl._create_default_https_context = ssl._create_unverified_context
 from .models import Feed
 
 FEED_CONFIG = "/".join((os.environ.get("HOME", '.'), ".feeds/feeds.yml"))
 
 # hash in dir to see if read.
-
 
 
 def all_feeds():
@@ -31,6 +25,7 @@ def print_line(entry):
     headline.append(entry.link)
 
     print(" :: ".join(headline))
+    # print(entry.summary)
 
 
 def get_feed():
