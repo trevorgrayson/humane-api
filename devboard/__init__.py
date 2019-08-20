@@ -1,4 +1,19 @@
 
+#  each feed = a project, should be able to `name:`
+#
+#  +-proj-----------|-prs-----|-blds-|
+#  | ds-py-models   | 1201/57 | pass | https://...
+#  | recs-filter    |         | fail |
+#  += news =========================================-
+#  | OP Ed - Democrats are ruining everything https://wsj.whatever.com
+#  | OP Ed - Democrats are ruining everything
+#  | OP Ed - Democrats are ruining everything
+#  | OP Ed - Democrats are ruining everything
+#  | OP Ed - Democrats are ruining everything
+#  +-------------------------------------------------------+
+#
+
+
 def main(stdscr):
     # Clear screen
     stdscr.clear()
