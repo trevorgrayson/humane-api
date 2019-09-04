@@ -8,6 +8,7 @@ else
   if [ -d $PROJECTS/$1 ]; then
     cd $PROJECTS/$1
     git fetch &
+    git status
 
   else 
     if [ -n "$HAPI_REPO" ]; then
