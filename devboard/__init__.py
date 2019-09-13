@@ -35,8 +35,8 @@ def main(stdscr):
     # NEEDS_@TTENTION/TOTAL_PRs_YOU_OPEN NEEDS_@TTENTION/TOTAL_PRs kr:KARMA_RATIO%
     stdscr.addstr(0, 17, " bld e%s/w%s/%s %s%% " %(good, err, warning, round(100*err/(good+err))))
     # todo links
-    stdscr.addstr(0, 38, "|ghub1 |ghub2 |tc1 |tc2 |tc3 |email")
-    stdscr.addstr(1, 0, "ml:what is the status? sg:here is that @emails.txt")
+    ## stdscr.addstr(0, 38, "|ghub1 |ghub2 |tc1 |tc2 |tc3 |email")
+    ## stdscr.addstr(1, 0, "ml:what is the status? sg:here is that @emails.txt")
     # stdscr.addstr(10, 0, "+--------------+")
     # stdscr.addstr(4, 0, "+------------------+")
     # METAR

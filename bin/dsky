@@ -42,7 +42,6 @@ if [ -d $PROJ_DIR ]; then
       echo "pull requests"
       dsky $1 pr
       ;;
-      ;;
   pr )
       cd $PROJ_DIR
       hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n" # %sC for color
@@ -50,6 +49,10 @@ if [ -d $PROJ_DIR ]; then
   prc )
       cd $PROJ_DIR
       hub pr checkout $3
+      ;;
+  edit )
+      cd $PROJ_DIR
+      $EDITOR
       ;;
   vi )
       cd $PROJ_DIR

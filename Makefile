@@ -22,4 +22,7 @@ clean:
 gitstatus:
 	$(PYTHON) devboard/git.py
 
-.PHONY: feeds
+devboard:
+	$(PYTHON) -m devboard
+
+.PHONY: feeds devboard
