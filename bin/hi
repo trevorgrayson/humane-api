@@ -7,7 +7,9 @@ if [ -z "$1" ]; then
 else
   if [ -d $PROJECTS/$1 ]; then
     cd $PROJECTS/$1
+    command -v title && title $1
     git fetch &
+    git status
 
   else 
     if [ -n "$HAPI_REPO" ]; then
@@ -15,6 +17,7 @@ else
       cd $PROJECTS
       git clone "$HAPI_REPO/$1.git"
       cd $1
+      command -v title && title $1
     fi
   fi
 
