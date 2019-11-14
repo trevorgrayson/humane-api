@@ -24,17 +24,16 @@ if [ -d $PROJ_DIR ]; then
     git clone $PROJ_DIR
   fi
 
-  cd $NOUN
 
+  cd $PROJ_DIR
+  echo $PROJ_DIR
   # TODO need to be able to specify if PROJECT dir, or temp dir
   case "$2" in
   github )
-      cd $PROJ_DIR
       # open or xdg-open
       open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`"
       ;;
   stat )
-      cd $PROJ_DIR
       # tc build 
       # github prs
       git diff
@@ -43,49 +42,43 @@ if [ -d $PROJ_DIR ]; then
       dsky $1 pr
       ;;
   pr )
-      cd $PROJ_DIR
       hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n" # %sC for color
       ;;
   prc )
-      cd $PROJ_DIR
       hub pr checkout $3
       ;;
   vi )
-      cd $PROJ_DIR
       vi
       ;;
   commit )
-      cd $PROJ_DIR
       git add .
       git commit
       ;;
   push )
-      cd $PROJ_DIR
       git push origin
       ;;
   stash )
-      cd $PROJ_DIR
       git stash
       ;;
   rebase )
-      cd $PROJ_DIR
       git pull --rebase origin master
       ;;
   co )
+      # hmm
       git checkout $3
       ;;
   branch )
+      # hmm
       git branch -a
       ;;
   idea )
-      cd $PROJ_DIR
       idea $1
       ;;
   run )
+      # hmm
       docker run -P $1
       ;;
   * )
-      cd $PROJ_DIR
       make $3
       ;;
   esac
