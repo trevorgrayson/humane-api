@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# get remainder of args
+export REST=$(echo "$@" |cut -d' ' -f 3-)
+
 if [ -z $1 ]; then
   echo "dsky SUBJECT VERB"
   exit 0
@@ -13,28 +16,20 @@ fi
 
 PROJ_DIR="$PROJECTS/$NOUN"
 
+echo $PROJ_DIR
+hi $NOUN 
+ls $PROJ_DIR
+
 if [ -d $PROJ_DIR ]; then
-  cd /tmp
-  mkdir -p dsky
-  cd dsky
 
-  if [ -d $NOUN ]; then
-    echo 'project cached'
-  else 
-    git clone $PROJ_DIR
-  fi
+  cd $PROJ_DIR
 
-  cd $NOUN
-
-  # TODO need to be able to specify if PROJECT dir, or temp dir
   case "$2" in
   github )
-      cd $PROJ_DIR
       # open or xdg-open
       open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`"
       ;;
   stat )
-      cd $PROJ_DIR
       # tc build 
       # github prs
       git diff
@@ -43,54 +38,36 @@ if [ -d $PROJ_DIR ]; then
       dsky $1 pr
       ;;
   pr )
-      cd $PROJ_DIR
       hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n" # %sC for color
       ;;
-  prc )
-      cd $PROJ_DIR
-      hub pr checkout $3
-      ;;
-  edit )
-      cd $PROJ_DIR
-      $EDITOR
-      ;;
-  vi )
-      cd $PROJ_DIR
-      vi
-      ;;
-  commit )
-      cd $PROJ_DIR
-      git add .
-      git commit
-      ;;
-  push )
-      cd $PROJ_DIR
-      git push origin
-      ;;
-  stash )
-      cd $PROJ_DIR
-      git stash
-      ;;
-  rebase )
-      cd $PROJ_DIR
-      git pull --rebase origin master
-      ;;
+  prc ) hub pr checkout $3;;
+  e ) $EDITOR;;
+  edit ) $EDITOR;;
+  vi ) vi;;
+  add ) git add $(REST);;
+  commit ) git commit $(REST);;
+  push ) git push origin;;
+  stash ) git stash $(REST);;
+  rebase ) git pull --rebase origin master;;
   co )
       git checkout $3
       ;;
   branch )
-      git branch -a
+      git branch $REST
       ;;
   idea )
-      cd $PROJ_DIR
       idea $1
       ;;
   run )
       docker run -P $1
       ;;
+  status )
+      git status
+      ;;
+  isgo ) git status;;
+  '' ) git status;;
   * )
-      cd $PROJ_DIR
-      make $3
+      make $2
       ;;
   esac
 

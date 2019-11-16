@@ -1,6 +1,7 @@
 PROJECTS=${PROJECTS:=$HOME/projects}
 PRESENT=${PWD##*/}
 
+
 if [ -z "$1" ]; then
   echo "please provide a project"
   cd $PROJECTS
@@ -15,8 +16,15 @@ else
     if [ -n "$HAPI_REPO" ]; then
       echo "Getting $1 from $HAPI_REPO/$1.git"
       cd $PROJECTS
-      git clone "$HAPI_REPO/$1.git"
-      cd $1
+
+      if [[ $1 == *"/"* ]]; then            # detect slash and optionally include org
+          PROJECT=`echo $1 | cut -d'/' -f2`
+          git clone "git@github.com:$1.git"
+          cd $PROJECT
+      else
+          git clone "$HAPI_REPO/$1.git" || git clone "git@github.com:trevorgrayson/$1.git"
+          cd $1
+      fi
       command -v title && title $1
     fi
   fi
