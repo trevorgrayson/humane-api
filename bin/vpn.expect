@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+set challenge [lindex $argv 0];
+
+spawn sudo openvpn --config $::env(HOME)/client.ovpn --auth-user-pass $::env(HOME)/.ovpn
+
+
+expect "Authenticator Code"
+
+send "$challenge\r"
+
+# expect eof
+expect "Initialization Sequence Completed"
