@@ -22,24 +22,29 @@ else
 
     PROJ_DIR="$PROJECTS/$NOUN"
     hi $NOUN 
+    BRANCH=`git branch | grep "*" | cut -d' ' -f2`
 
     if [ -d $PROJ_DIR ]; then
 
       cd $PROJ_DIR
 
       case "$2" in
-      github )  open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`";; # open or xdg-open
       stat )    # tc build 
                 # github prs
                 git diff --stat
                 echo "pull requests"
                 dsky $1 pr
                 ;;
-      pr )      hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n";; # %sC for color
-      prc )     hub pr checkout $3;;
+      # editors
       e )       $EDITOR;;
       edit )    $EDITOR;;
       vi )      vi;;
+      idea )    idea $1;;
+      # git
+      github )  open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`";; # open or xdg-open
+      pr )      open "https://github.com/$GIT_ORG/$NOUN/compare/master...$BRANCH";;
+      prs )     hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n";; # %sC for color
+      prc )     hub pr checkout $3;;
       add )     git add $(REST);;
       commit )  git commit $(REST);;
       push )    git push origin;;
@@ -47,7 +52,6 @@ else
       rebase )  git pull --rebase origin master;;
       co )      git checkout $3;;
       branch )  git branch $REST;;
-      idea )    idea $1;;
       run )     docker run $REST $1;;
       status )  git status;;
       isgo )    git status;;
