@@ -2,6 +2,7 @@ import requests
 import json
 
 import subprocess
+from subprocess import PIPE
 
 
 API_KEY = "RoCpKjypWNtblVMpgeeMmB4s1gGbQzZ5ZRdSomc1"
@@ -15,7 +16,21 @@ if response.status_code == 200:
     image = data['hdurl']
 
     print("Updating image to %s" % image)
+    args = []
+    script = """
+      tell application "System Events"
+      tell current desktop
+      set picture to "%s"
+      end tell
+      end tell  
+    """ % image
+    script = "tell application \"System Events\" to tell every desktop to set picture to \"%s\"" % image
+
+    print(script)
+    p = subprocess.Popen(['osascript', '-e', script])
+    # stdout, stderr = p.communicate(script)
+
     # ubuntu
-    subprocess.call(["gsettings", "set",  "org.gnome.desktop.background", "picture-uri", image])
+    # subprocess.call(["gsettings", "set",  "org.gnome.desktop.background", "picture-uri", image])
 
 
