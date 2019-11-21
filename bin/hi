@@ -1,37 +1,40 @@
+#!/bin/bash
+
 PROJECTS=${PROJECTS:=$HOME/projects}
 PRESENT=${PWD##*/}
+GIT_USER=trevorgrayson
+GIT_ORG=retentionscience
+GIT_HOST=git@github.com
+PROJECT=$1
+REPO=$GIT_HOST:$GIT_ORG/$PROJECT.git
 
-
-if [ -z "$1" ]; then
+if [ -z "$PROJECT" ]; then
   echo "please provide a project"
   cd $PROJECTS
+
 else
-  if [ -d $PROJECTS/$1 ]; then
-    cd $PROJECTS/$1
-    command -v title && title $1
+  if [ -d $PROJECTS/$PROJECT ]; then
+    cd $PROJECTS/$PROJECT
+    command -v title && title $PROJECT
     git fetch &
     git status
 
   else 
     if [ -n "$HAPI_REPO" ]; then
-      echo "Getting $1 from $HAPI_REPO/$1.git"
+      echo "Getting $PROJECT from $REPO"
       cd $PROJECTS
 
-      if [[ $1 == *"/"* ]]; then            # detect slash and optionally include org
-          PROJECT=`echo $1 | cut -d'/' -f2`
-          git clone "git@github.com:$1.git"
+      if [[ $PROJECT == *"/"* ]]; then    # detect slash and optionally include org
+          PROJECT=`echo $PROJECT | cut -d'/' -f2`
+          git clone $REPO
           cd $PROJECT
       else
-          git clone "$HAPI_REPO/$1.git" || git clone "git@github.com:trevorgrayson/$1.git"
-          cd $1
+          git clone -q $REPO 2>/dev/null || echo "$REPO not found, checking $GIT_USER/$PROJECT" && \
+          git clone "$GIT_HOST:$GIT_USER/$PROJECT.git"
+          cd $PROJECT
       fi
       command -v title && title $1
     fi
   fi
-
-  # activate environment file, if exists
-  # if [ -d ~/.venv/$1 ]; then
-  #   . ~/.venv/$1/bin/activate # python virtualenv
-  # fi
 fi
 

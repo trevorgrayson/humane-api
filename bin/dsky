@@ -1,78 +1,63 @@
 #!/bin/bash
+#
+# dsky - inspiration from the Apollo Space Program
+#
+# dsky NOUN VERB [*args]
+#
+# 
 
 # get remainder of args
 export REST=$(echo "$@" |cut -d' ' -f 3-)
 
 if [ -z $1 ]; then
-  echo "dsky SUBJECT VERB"
-  exit 0
-fi
-
-if [ $1 == '.' ]; then
-    NOUN=`pwd | rev | cut -d'/' -f1 |rev`
+    # help screen
+    echo "dsky SUBJECT VERB"
 else
-    NOUN=$1
-fi
+    # Set NOUN
+    if [ $1 == '.' ]; then
+        NOUN=`pwd | rev | cut -d'/' -f1 |rev`
+    else
+        NOUN=$1
+    fi
 
-PROJ_DIR="$PROJECTS/$NOUN"
+    PROJ_DIR="$PROJECTS/$NOUN"
+    hi $NOUN 
 
-echo $PROJ_DIR
-hi $NOUN 
-ls $PROJ_DIR
+    if [ -d $PROJ_DIR ]; then
 
-if [ -d $PROJ_DIR ]; then
+      cd $PROJ_DIR
 
-  cd $PROJ_DIR
+      case "$2" in
+      github )  open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`";; # open or xdg-open
+      stat )    # tc build 
+                # github prs
+                git diff --stat
+                echo "pull requests"
+                dsky $1 pr
+                ;;
+      pr )      hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n";; # %sC for color
+      prc )     hub pr checkout $3;;
+      e )       $EDITOR;;
+      edit )    $EDITOR;;
+      vi )      vi;;
+      add )     git add $(REST);;
+      commit )  git commit $(REST);;
+      push )    git push origin;;
+      stash )   git stash $(REST);;
+      rebase )  git pull --rebase origin master;;
+      co )      git checkout $3;;
+      branch )  git branch $REST;;
+      idea )    idea $1;;
+      run )     docker run $REST $1;;
+      status )  git status;;
+      isgo )    git status;;
+      '' )      git status;;
+      * )       make $2;;
+      esac
 
-  case "$2" in
-  github )
-      # open or xdg-open
-      open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`"
-      ;;
-  stat )
-      # tc build 
-      # github prs
-      git diff
-      git diff --stat
-      echo "pull requests"
-      dsky $1 pr
-      ;;
-  pr )
-      hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n" # %sC for color
-      ;;
-  prc ) hub pr checkout $3;;
-  e ) $EDITOR;;
-  edit ) $EDITOR;;
-  vi ) vi;;
-  add ) git add $(REST);;
-  commit ) git commit $(REST);;
-  push ) git push origin;;
-  stash ) git stash $(REST);;
-  rebase ) git pull --rebase origin master;;
-  co )
-      git checkout $3
-      ;;
-  branch )
-      git branch $REST
-      ;;
-  idea )
-      idea $1
-      ;;
-  run )
-      docker run -P $1
-      ;;
-  status )
-      git status
-      ;;
-  isgo ) git status;;
-  '' ) git status;;
-  * )
-      make $2
-      ;;
-  esac
-
-else 
-  # not a local ~/project 
-  echo "SUBJECT $NOUN not found."
+    else 
+      # not a local ~/project 
+      echo "SUBJECT $NOUN not found."
+    fi
 fi
 
