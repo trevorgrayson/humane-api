@@ -1,0 +1,9 @@
+PROJECTS="retentionscience/recs-workflow retentionscience/ds-py-models"
+
+for PROJECT in $PROJECTS; 
+do 
+    echo $PROJECT; 
+    DIR=`echo $PROJECT | cut -f2 -d/`
+    cd ~/projects/$DIR; 
+    hub pr list -f"%NC %au|%t https://github.com/$PROJECT/pull/%I%n" | sed -e "s/|/	/g"
+done

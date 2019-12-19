@@ -5,36 +5,38 @@ PRESENT=${PWD##*/}
 GIT_USER=trevorgrayson
 GIT_ORG=retentionscience
 GIT_HOST=git@github.com
-PROJECT=$1
-REPO=$GIT_HOST:$GIT_ORG/$PROJECT.git
+LOCATION=$1
+PROJECT=`echo $1 | cut -d/ -f2`
+REPO=$GIT_HOST:$GIT_ORG/$LOCATION.git
+
+cd $PROJECTS
 
 if [ -z "$PROJECT" ]; then
   echo "please provide a project"
   cd $PROJECTS
-
-else
-  if [ -d $PROJECTS/$PROJECT ]; then
-    cd $PROJECTS/$PROJECT
-    command -v title && title $PROJECT
-    git fetch &
-    git status
-
-  else 
-    if [ -n "$HAPI_REPO" ]; then
-      echo "Getting $PROJECT from $REPO"
-      cd $PROJECTS
-
-      if [[ $PROJECT == *"/"* ]]; then    # detect slash and optionally include org
-          PROJECT=`echo $PROJECT | cut -d'/' -f2`
-          git clone $REPO
-          cd $PROJECT
-      else
-          git clone -q $REPO 2>/dev/null || echo "$REPO not found, checking $GIT_USER/$PROJECT" && \
-          git clone "$GIT_HOST:$GIT_USER/$PROJECT.git"
-          cd $PROJECT
-      fi
-      command -v title && title $1
-    fi
-  fi
+  return
 fi
 
+if [ -d $PROJECTS/$PROJECT ]; then # project is checked out in the $PROJECTS folder
+    cd $PROJECTS/$PROJECT
+    test -n `command -v title` && title $PROJECT # set terminal title, if possible
+    git fetch &
+    # git status
+    return
+fi
+
+if [ -n "$REPO" ]; then
+  echo "Getting $PROJECT from $REPO"
+  cd $PROJECTS
+
+  if [[ $PROJECT == *"/"* ]]; then    # detect slash and optionally include org
+      git clone $REPO
+      cd $PROJECT
+  else
+      git clone -q $REPO 2>/dev/null || echo "$REPO not found, checking $GIT_USER/$PROJECT" && \
+      git clone "$GIT_HOST:$GIT_USER/$PROJECT.git"
+      cd $PROJECT
+  fi
+
+  test -n `command -v title` && title $PROJECT
+fi

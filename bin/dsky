@@ -12,56 +12,57 @@ export REST=$(echo "$@" |cut -d' ' -f 3-)
 if [ -z $1 ]; then
     # help screen
     echo "dsky SUBJECT VERB"
-else
-    # Set NOUN
-    if [ $1 == '.' ]; then
-        NOUN=`pwd | rev | cut -d'/' -f1 |rev`
-    else
-        NOUN=$1
-    fi
-
-    PROJ_DIR="$PROJECTS/$NOUN"
-    hi $NOUN 
-    BRANCH=`git branch | grep "*" | cut -d' ' -f2`
-
-    if [ -d $PROJ_DIR ]; then
-
-      cd $PROJ_DIR
-
-      case "$2" in
-      stat )    # tc build 
-                # github prs
-                git diff --stat
-                echo "pull requests"
-                dsky $1 pr
-                ;;
-      # editors
-      e )       $EDITOR;;
-      edit )    $EDITOR;;
-      vi )      vi;;
-      idea )    idea $1;;
-      # git
-      github )  open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`";; # open or xdg-open
-      pr )      open "https://github.com/$GIT_ORG/$NOUN/compare/master...$BRANCH";;
-      prs )     hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n";; # %sC for color
-      prc )     hub pr checkout $3;;
-      add )     git add $(REST);;
-      commit )  git commit $(REST);;
-      push )    git push origin;;
-      stash )   git stash $(REST);;
-      rebase )  git pull --rebase origin master;;
-      co )      git checkout $3;;
-      branch )  git branch $REST;;
-      run )     docker run $REST $1;;
-      status )  git status;;
-      isgo )    git status;;
-      '' )      git status;;
-      * )       make $2;;
-      esac
-
-    else 
-      # not a local ~/project 
-      echo "SUBJECT $NOUN not found."
-    fi
+    return 0
 fi
+
+# Set NOUN
+if [ $1 == '.' ]; then
+    NOUN=`pwd | rev | cut -d'/' -f1 |rev`
+else
+    NOUN=$1
+    NOUN_ONLY=`echo $1 | cut -d/ -f2`
+fi
+
+PROJ_DIR="$PROJECTS/$NOUN_ONLY"
+hi $NOUN 
+BRANCH=`git branch | grep "*" | cut -d' ' -f2`
+
+if ! [ -d $PROJ_DIR ]; then
+  # not a local ~/project 
+  echo "SUBJECT $NOUN not found."
+  return
+fi
+
+cd $PROJ_DIR
+
+case "$2" in
+stat )  # tc build 
+        # github prs
+        git diff --stat
+        echo "pull requests"
+        dsky $1 pr
+        ;;
+# editors
+e )       $EDITOR;;
+edit )    $EDITOR;;
+vi )      vi;;
+idea )    idea $1;;
+# git
+github )  open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`";; # open or xdg-open
+pr )      open "https://github.com/$GIT_ORG/$NOUN/compare/master...$BRANCH";;
+prs )     hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n";; # %sC for color
+prc )     hub pr checkout $3;;
+add )     git add $(REST);;
+commit )  git commit $(REST);;
+push )    git push origin;;
+stash )   git stash $(REST);;
+rebase )  git pull --rebase origin master;;
+co )      git checkout $3;;
+branch )  git branch $REST;;
+run )     docker run $REST $1;;
+status )  git status;;
+isgo )    git status;;
+'' )      git status;;
+* )       make $2;;
+esac
 

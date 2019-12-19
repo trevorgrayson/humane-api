@@ -1,6 +1,12 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+if [[ -z $1 ]]
+then
+    curl -I https://tc.rsci.co/
+    exit 0
+fi
+
 if [[ $1 == "off" ]]
 then 
     sudo killall -9 openvpn

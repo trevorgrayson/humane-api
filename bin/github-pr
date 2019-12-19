@@ -1,0 +1,15 @@
+OWNER=retentionscience
+REPO=${PWD##/*/}
+BRANCH=`git branch | grep '*' | cut -d' ' -f2`
+TICKET=`echo $BRANCH| cut -d/ -f1`
+TEMP=`mktemp`
+echo "## JIRA" > $TEMP
+echo "[Jira Card](https://retentionscience.atlassian.net/browse/$TICKET)" >> $TEMP
+echo "" >> $TEMP
+cat ~/pr-skel >> $TEMP
+
+$EDITOR $TEMP
+PR= { "title": "$BRANCH", "head": "$BRANCH", "body": "IOU", "draft": True, "base": "master" }
+rm $TEMP
+# maintainer_can_modify
+curl -X $PR -u `cat $HOME/.github-credentials` -H "Content-Type: application/json" https://api.github.com/repos/$OWNER/$REPO/pulls
