@@ -5,6 +5,49 @@
 # dsky NOUN VERB [*args]
 #
 # 
+function hi {
+  PROJECTS=${PROJECTS:=$HOME/projects}
+  PRESENT=${PWD##*/}
+  # GIT_USER
+  GIT_ORG=retentionscience
+  GIT_HOST=git@github.com
+  LOCATION=$1
+  PROJECT=`echo $1 | cut -d/ -f2`
+  REPO=$GIT_HOST:$GIT_ORG/$PROJECT.git
+
+  cd $PROJECTS
+
+  if [ -z "$PROJECT" ]; then                      # No $NOUN was provided
+    echo "please provide a project"
+    return
+  fi
+
+  if [ -d $PROJECTS/$PROJECT ]; then              # project is present in $PROJECTS dir
+    cd $PROJECTS/$PROJECT
+    test -n `command -v title` && title $PROJECT  # set terminal title, if possible
+    git fetch &
+    # git status
+    return
+  fi
+
+  if [ -n "$REPO" ]; then
+    echo "Getting $PROJECT from $GIT_HOST:$GIT_ORG/$PROJECT.git"
+
+    # if test -z $GIT_USER; then
+    #     echo "please set $GIT_USER. consider adding the following to ~/.bashrc"
+    #     echo "export GIT_USER=\"$USER\""
+    # fi
+
+    git clone -q "$GIT_HOST:$GIT_ORG/$PROJECT.git" || echo "$REPO not found, checking $GIT_USER/$PROJECT" && \
+    git clone -q "$GIT_HOST:$GIT_USER/$PROJECT.git" || echo "Not found."
+
+    test -d $PROJECT && cd $PROJECT || echo "Repo not found" && return 1
+
+    test -n `command -v title` && title $PROJECT
+    git fetch &
+  fi
+  return 0
+}
 
 # get remainder of args
 export REST=$(echo "$@" |cut -d' ' -f 3-)
@@ -23,10 +66,10 @@ else
     NOUN_ONLY=`echo $1 | cut -d/ -f2`
 fi
 
-PROJ_DIR="$PROJECTS/$NOUN_ONLY"
-hi $NOUN 
-BRANCH=`git branch | grep "*" | cut -d' ' -f2`
+hi $NOUN
 
+
+PROJ_DIR="$PROJECTS/$NOUN_ONLY"
 if ! [ -d $PROJ_DIR ]; then
   # not a local ~/project 
   echo "SUBJECT $NOUN not found."
@@ -36,20 +79,23 @@ fi
 cd $PROJ_DIR
 
 case "$2" in
-stat )  # tc build 
-        # github prs
-        git diff --stat
-        echo "pull requests"
-        dsky $1 pr
-        ;;
+stat )    # tc build 
+          # github prs
+          git diff --stat
+          echo "pull requests"
+          dsky $1 pr
+          ;;
+
 # editors
 e )       $EDITOR;;
 edit )    $EDITOR;;
 vi )      vi;;
 idea )    idea $1;;
+
 # git
 github )  open "http://github.com/`cat .git/config | grep url | cut -d: -f2 | cut -d. -f1`";; # open or xdg-open
-pr )      open "https://github.com/$GIT_ORG/$NOUN/compare/master...$BRANCH";;
+pr )      BRANCH=`git branch | grep "*" | cut -d' ' -f2`
+          open "https://github.com/$GIT_ORG/$NOUN/compare/master...$BRANCH";;
 prs )     hub pr list -s open -L 10 --format="%l%i %au: %t %uI %Nc%n    a:%as  r:%rs  %L%n";; # %sC for color
 prc )     hub pr checkout $3;;
 add )     git add $(REST);;

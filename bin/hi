@@ -20,22 +20,21 @@ fi
 if [ -d $PROJECTS/$PROJECT ]; then # project is checked out in the $PROJECTS folder
     cd $PROJECTS/$PROJECT
     test -n `command -v title` && title $PROJECT # set terminal title, if possible
-    git fetch &
     # git status
     return
 fi
 
 if [ -n "$REPO" ]; then
-  echo "Getting $PROJECT from $REPO"
+  echo "Getting $PROJECT from $GIT_HOST:$GIT_ORG/$PROJECT.git"
   cd $PROJECTS
 
   if [[ $PROJECT == *"/"* ]]; then    # detect slash and optionally include org
       git clone $REPO
       cd $PROJECT
   else
-      git clone -q $REPO 2>/dev/null || echo "$REPO not found, checking $GIT_USER/$PROJECT" && \
-      git clone "$GIT_HOST:$GIT_USER/$PROJECT.git"
-      cd $PROJECT
+      git clone -q "$GIT_HOST:$GIT_ORG/$PROJECT.git" || echo "$REPO not found, checking $GIT_USER/$PROJECT" && \
+      git clone -q "$GIT_HOST:$GIT_USER/$PROJECT.git" || echo "Not found."
+      test -d $PROJECT && cd $PROJECT
   fi
 
   test -n `command -v title` && title $PROJECT
