@@ -15,6 +15,8 @@ then
 fi
 
 expect -f $DIR/vpn.expect $1 &
+
+"set timeout -1; spawn sudo openvpn --config $::env(HOME)/client.ovpn --auth-user-pass $::env(HOME)/.ovpn; expect \"Authenticator Code\"; send -- \"$1\\r\"; expect \"Initialization Sequence Completed\""
 sleep 20
 
 echo "resetting wireless"
