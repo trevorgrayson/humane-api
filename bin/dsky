@@ -25,7 +25,6 @@ function hi {
   if [ -d $PROJECTS/$PROJECT ]; then              # project is present in $PROJECTS dir
     cd $PROJECTS/$PROJECT
     test -n `command -v title` && title $PROJECT  # set terminal title, if possible
-    git fetch &
     # git status
     return
   fi
@@ -44,7 +43,6 @@ function hi {
     test -d $PROJECT && cd $PROJECT || echo "Repo not found" && return 1
 
     test -n `command -v title` && title $PROJECT
-    git fetch &
   fi
   return 0
 }
@@ -74,6 +72,12 @@ if ! [ -d $PROJ_DIR ]; then
   # not a local ~/project 
   echo "SUBJECT $NOUN not found."
   return
+else
+  echo "branches: `git branch | xargs`"
+  test -f dsky.notes && cat dsky.notes
+  git fetch &
+
+  (find . -name '*.py' > cscope.files & find . -name '*.rb' >> cscope.files) && cscope -b 
 fi
 
 cd $PROJ_DIR
