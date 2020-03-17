@@ -63,7 +63,7 @@ class Feed:
             ))
 
     def get_status(self, entry):
-        if self.status:
+        if self.status and hasattr(self.status, 'items'):
             for k, v in self.status.items():
                 status_regex = re.compile(v, re.MULTILINE)
                 status_match = re.search(status_regex, getattr(entry, k))
