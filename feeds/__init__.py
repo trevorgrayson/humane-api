@@ -24,7 +24,7 @@ def print_line(entry):
     headline.append(entry.timestamp)
     headline.append(entry.link)
 
-    print(" :: ".join(headline))
+    print("\t".join(headline))
     # print(entry.summary)
 
 

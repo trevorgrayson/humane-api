@@ -22,7 +22,6 @@ class Feed:
         self.password = kwargs.get('password')
         self.group_by = kwargs.get('group_by')
 
-
     def fetch(self):
         self.entries = []
 
@@ -82,7 +81,6 @@ class Entry:
         self.status=kwargs.get('status')
         self.link=kwargs.get('link')
         self.timestamp=kwargs.get('timestamp')
-
 
     def __str__(self):
         build_success = re.compile("State: passed", re.MULTILINE)
