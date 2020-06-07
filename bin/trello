@@ -1,0 +1,3 @@
+# curl https://api.trello.com/1/members/me/boards?fields=name,url&key=$TRELLO_KEY&token=$TRELLO_TOKEN
+curl -s "https://api.trello.com/1/lists/5ddd82f9b29bd576868ac86b/cards?key=$TRELLO_KEY&token=$TRELLO_TOKEN" | jq '.[] | .name'
+
