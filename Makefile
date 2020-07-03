@@ -27,7 +27,7 @@ devboard:
 
 stonks:
 	@mkdir -p data/stonks/wallstreetbets
-	$(PYTHON) feeds/stonks.py
+	$(PYTHON) -m stonks
 
 podcats:
 	$(PYTHON) feeds/podcasts.py
