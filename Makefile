@@ -26,6 +26,10 @@ devboard:
 	$(PYTHON) -m devboard
 
 stonks:
+	@mkdir -p data/stonks/wallstreetbets
 	$(PYTHON) feeds/stonks.py
+
+podcats:
+	$(PYTHON) feeds/podcasts.py
 
 .PHONY: feeds devboard
