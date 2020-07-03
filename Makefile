@@ -25,4 +25,7 @@ gitstatus:
 devboard:
 	$(PYTHON) -m devboard
 
+stonks:
+	$(PYTHON) feeds/stonks.py
+
 .PHONY: feeds devboard

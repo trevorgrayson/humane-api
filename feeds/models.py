@@ -23,9 +23,11 @@ class Feed:
         self.group_by = kwargs.get('group_by')
 
     def fetch(self):
-        self.entries = []
-
-        args = {}
+        args = {
+            'headers': {
+                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+            }
+        }
 
         creds = self.get_credentials()
         if creds:
@@ -33,14 +35,20 @@ class Feed:
 
         # logger.info(f"fetching {self.url}")
         # pdb.set_trace()
-        response = requests.get(self.url, **args)
-        self.NewsFeed = feedparser.parse(response.text)
+        response = requests.get(self.url, **args,)
+        if response.status_code != 200:
+            raise Exception(f"HTTP: {response.status_code}: {response.text}")
+        self.parse(response.text)
+
+    def parse(self, text):
+        self.entries = []
+        self.NewsFeed = feedparser.parse(text)
+
         # logger.info(self.NewsFeed)
         logger.info(f"received {len(self.NewsFeed.entries)} entries")
 
         rows = {}
         for entry in self.NewsFeed.entries:
-
             if self.group_by:
                 for k, v in self.group_by.items():
                     regex = re.compile(v, re.MULTILINE)
@@ -78,9 +86,10 @@ class Entry:
     def __init__(self, **kwargs):
         self.title=kwargs.get('title')
         self.summary=kwargs.get('summary')
+        self.content = kwargs.get('content', self.summary)
         self.status=kwargs.get('status')
         self.link=kwargs.get('link')
-        self.timestamp=kwargs.get('timestamp')
+        self.timestamp=kwargs.get('timestamp', kwargs.get('updated'))
 
     def __str__(self):
         build_success = re.compile("State: passed", re.MULTILINE)
