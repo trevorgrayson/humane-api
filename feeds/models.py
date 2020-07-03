@@ -66,8 +66,13 @@ class Feed:
               summary=entry.summary,
               status=self.get_status(entry),
               link=entry.link,
+              enclosure=self.get_enclosures(entry),
               timestamp=entry.updated
             ))
+
+    def get_enclosures(self, entry):
+        if len(entry.enclosures) > 0:
+            return entry.enclosures[0]['url']
 
     def get_status(self, entry):
         if self.status:
@@ -84,17 +89,18 @@ class Feed:
 
 class Entry:
     def __init__(self, **kwargs):
-        self.title=kwargs.get('title')
-        self.summary=kwargs.get('summary')
+        self.title = kwargs.get('title')
+        self.summary = kwargs.get('summary')
         self.content = kwargs.get('content', self.summary)
-        self.status=kwargs.get('status')
-        self.link=kwargs.get('link')
-        self.timestamp=kwargs.get('timestamp', kwargs.get('updated'))
+        self.status = kwargs.get('status')
+        self.enclosure = kwargs.get('enclosure')
+        self.link = kwargs.get('link')
+        self.timestamp = kwargs.get('timestamp', kwargs.get('updated'))
 
     def __str__(self):
         build_success = re.compile("State: passed", re.MULTILINE)
 
-        return entry.title + "\n" +\
-            ("PASS" if re.search(build_success, entry.summary) else "FAIL") +\
-            "\t" + entry.link +\
-            "\t" + entry.summary + "\n"
+        return self.title + "\n" +\
+            ("PASS" if re.search(build_success, self.summary) else "FAIL") +\
+            "\t" + self.link +\
+            "\t" + self.summary + "\n"

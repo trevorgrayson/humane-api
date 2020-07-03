@@ -42,3 +42,5 @@ if __name__ == '__main__':
             print(" ".join((
                 entry.title,
                 )))
+
+        print(f"Up Next: {feed.entries[0].enclosure}")
