@@ -32,4 +32,4 @@ stonks:
 podcats:
 	$(PYTHON) feeds/podcasts.py
 
-.PHONY: feeds devboard
+.PHONY: feeds devboard stonks
