@@ -1,10 +1,12 @@
 DEPDIR:=venv
 PYTHON:=python3
-export PYTHONPATH=.:$(DEPDIR)
+export PYTHONPATH=.:$(DEPDIR):pyrh
 
 compile: venv
 venv: requirements.txt
 	$(PYTHON) -m pip install -t venv -r requirements.txt 
+	git clone https://github.com/trevorgrayson/pyrh.git pyrh-git
+	cp -rf pyrh-git/pyrh .
 	touch venv
 
 testinplace:
