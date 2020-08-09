@@ -27,10 +27,13 @@ if response.status_code == 200:
     script = "tell application \"System Events\" to tell every desktop to set picture to \"%s\"" % image
 
     print(script)
-    p = subprocess.Popen(['osascript', '-e', script])
-    # stdout, stderr = p.communicate(script)
+    try:
+        p = subprocess.Popen(['osascript', '-e', script])
+        # stdout, stderr = p.communicate(script)
 
-    # ubuntu
-    # subprocess.call(["gsettings", "set",  "org.gnome.desktop.background", "picture-uri", image])
+        # ubuntu
+        # subprocess.call(["gsettings", "set",  "org.gnome.desktop.background", "picture-uri", image])
+    except FileNotFoundError:
+        print(image)
 
 
