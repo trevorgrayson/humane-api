@@ -29,7 +29,7 @@ stonks:
 	@mkdir -p data/stonks/wallstreetbets
 	$(PYTHON) -m stonks
 
-podcats:
-	$(PYTHON) feeds/podcasts.py
+podcasts:
+	$(PYTHON) -m podcasts
 
-.PHONY: feeds devboard stonks
+.PHONY: feeds devboard podcasts stonks

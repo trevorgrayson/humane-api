@@ -1,6 +1,6 @@
 import logging
 from time import sleep
-from feeds import Feed, get_feed
+from feeds import Feed
 from . import FEEDS, REG_EXP, TICKER_BLACK_LIST, save_hashed
 
 if __name__ == '__main__':
