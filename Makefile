@@ -32,4 +32,8 @@ stonks:
 podcasts:
 	$(PYTHON) -m podcasts
 
-.PHONY: feeds devboard podcasts stonks
+sunday:
+	$(PYTHON) -m sunday
+	$(PYTHON) bin/sunday-graph.py
+
+.PHONY: feeds devboard podcasts stonks sunday

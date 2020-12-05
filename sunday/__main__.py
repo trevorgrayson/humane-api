@@ -7,8 +7,8 @@ from http.client import HTTPSConnection
 
 OUT_FILE = f"{os.environ['HOME']}/velocity"
 
-DOING_COLUMN = 0
-DONE_COLUMN = 1
+DOING_COLUMN = 2
+DONE_COLUMN = 3
 WEEK = 2
 
 TRELLO_KEY = os.environ['TRELLO_KEY']
