@@ -1,5 +1,9 @@
 from os import environ
+import numpy as np
+import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
+sns.set_theme(style="whitegrid")
 
 HOME = environ['HOME']
 
@@ -12,9 +16,13 @@ with open(f"{HOME}/velocity", "r") as fp:
         s.append(count)
         sets[discipline] = s
 
-for k, vals in sets.items():
-    plt.plot(vals, label=k)
-    plt.xlabel("date")
-    plt.ylabel("done count")
+keys = sets.keys()
+values = zip(*[map(int, v) for tup in list(zip(sets.values())) for v in tup])
+periods = len(list(sets.values())[0])
 
-plt.show()
+
+data = pd.DataFrame(values, list(range(0, periods)), columns=keys)
+sns.lineplot(data=data, palette="tab10", linewidth=2.5)
+
+# plt.show()
+plt.savefig("build/velocity.png")
