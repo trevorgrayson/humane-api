@@ -37,6 +37,6 @@ sunday:
 	mkdir -p build
 	$(PYTHON) -m sunday
 	$(PYTHON) bin/sunday-graph.py
-	sudo cp build/velocity.png $(IMGINE)
+	cp build/velocity.png $(IMGINE)
 
 .PHONY: feeds devboard podcasts stonks sunday

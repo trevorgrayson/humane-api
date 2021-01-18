@@ -17,7 +17,8 @@ with open(f"{HOME}/velocity", "r") as fp:
         sets[discipline] = s
 
 keys = sets.keys()
-values = zip(*[map(int, v) for tup in list(zip(sets.values())) for v in tup])
+values = zip(*[map(int, v) for tup in list(zip(sets.values())) 
+                           for v in tup])
 periods = len(list(sets.values())[0])
 
 
