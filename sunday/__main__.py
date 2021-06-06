@@ -73,4 +73,5 @@ if __name__ == '__main__':
                 print(line)
                 out.write(line + "\n")
 
-                ARCHIVE_CARDS
+                conn.request('POST', ARCHIVE_CARDS % l['id'])
+                resp = conn.getresponse()
