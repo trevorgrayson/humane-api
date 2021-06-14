@@ -73,5 +73,7 @@ if __name__ == '__main__':
                 print(line)
                 out.write(line + "\n")
 
-                conn.request('POST', ARCHIVE_CARDS % l['id'])
-                resp = conn.getresponse()
+                conn2 = HTTPSConnection('api.trello.com', timeout=2)
+                conn2.request('POST', ARCHIVE_CARDS % l['id'])
+                resp = conn2.getresponse()
+                conn2.close()
