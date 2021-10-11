@@ -63,17 +63,14 @@ if __name__ == '__main__':
         for l in lists():
             conn.request('GET', CARDS_URL % l['id'])
             resp = conn.getresponse()
-
             if resp.status == 200:
                 data = resp.read()
                 cards = loads(data)
                 line = "\t".join(map(str, (
                     now.strftime('%Y-%m-%d'), l['project'], len(cards)
                 )))
-                print(line)
                 out.write(line + "\n")
 
-                conn2 = HTTPSConnection('api.trello.com', timeout=2)
-                conn2.request('POST', ARCHIVE_CARDS % l['id'])
-                resp = conn2.getresponse()
-                conn2.close()
+                conn.request('POST', ARCHIVE_CARDS % l['id'])
+                resp = conn.getresponse()
+                resp.read()
